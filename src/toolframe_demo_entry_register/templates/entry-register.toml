@@ -1,0 +1,38 @@
+schema_version = 1
+
+required_capabilities = [
+    "service:entry-register.entries",
+    "entry-register/dashboard.page/main",
+    "entry-register/mcp.tool/list_entries",
+    "entry-register/llms.document/usage",
+]
+
+[application]
+# Replace this documented example UUID and name for your local application.
+id = "00000000-0000-0000-0000-000000000001"
+name = "Entry Register"
+host = "127.0.0.1"
+port = 9876
+
+[plugins.storage-sqlite]
+source = "pypi:toolframe-storage-sqlite==0.1.0"
+enabled = true
+
+[plugins.streamlit-dashboard]
+source = "pypi:toolframe-streamlit-dashboard==0.1.0"
+enabled = true
+
+[plugins.fastmcp]
+source = "pypi:toolframe-fastmcp==0.1.0"
+enabled = true
+
+[plugins.llms-txt]
+source = "pypi:toolframe-llms-txt==0.1.0"
+enabled = true
+
+[plugins.entry-register]
+source = "pypi:toolframe-demo-entry-register==0.1.0"
+enabled = true
+
+[bindings]
+"toolframe.storage.sql" = "storage-sqlite"

@@ -1,0 +1,38 @@
+[build-system]
+requires = ["hatchling>=1.27,<2"]
+build-backend = "hatchling.build"
+
+[project]
+name = "toolframe-demo-entry-register"
+version = "0.1.0"
+description = "Ordinary business plugin example for Toolframe"
+requires-python = ">=3.14"
+dependencies = ["toolframe-sdk==0.1.0"]
+
+[project.optional-dependencies]
+ui = ["streamlit==1.61.0"]
+
+[project.entry-points."toolframe.plugins"]
+entry-register = "toolframe_demo_entry_register.plugin:plugin"
+
+[dependency-groups]
+dev = [
+    "pytest>=8,<10",
+    "pytest-asyncio>=1,<2",
+    "ruff>=0.12,<1",
+    "toolframe-storage-sqlite==0.1.0",
+]
+
+[tool.uv.sources]
+toolframe-sdk = { path = "../toolframe-sdk", editable = true }
+toolframe-storage-sqlite = { path = "../toolframe-storage-sqlite", editable = true }
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/toolframe_demo_entry_register"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+
+[tool.ruff]
+target-version = "py314"
