@@ -31,16 +31,16 @@ source = "pypi:toolframe-llms-txt==0.2.0"
 enabled = true
 
 [plugins.entry-register]
-source = "pypi:toolframe-demo-entry-register==0.2.0"
+source = "pypi:toolframe-demo-entry-register==0.2.1"
 enabled = true
 
 [bindings]
 "toolframe.storage.sql" = "storage-sqlite"
 
 [plugins.auth]
-source = "pypi:toolframe-auth==0.1.0"
+source = "pypi:toolframe-auth==0.1.1"
 enabled = true
 
 [plugins.dashboard-auth]
-source = "pypi:toolframe-dashboard-auth==0.1.0"
+source = "pypi:toolframe-dashboard-auth==0.1.1"
 enabled = true
