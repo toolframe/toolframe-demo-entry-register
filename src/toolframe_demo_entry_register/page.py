@@ -47,7 +47,11 @@ def render(context: PageContext) -> None:
     if entries:
         st.dataframe(entries, hide_index=True, width="stretch")
     else:
-        st.info("No entries yet. Create an entry below.")
+        st.info("No entries yet.")
+
+    if not context.can("entry-register.write"):
+        st.caption("Read-only access")
+        return
 
     with st.form("entry-register-create"):
         st.subheader("Create entry")

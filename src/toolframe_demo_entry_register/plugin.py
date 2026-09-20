@@ -5,11 +5,13 @@ from __future__ import annotations
 from importlib.resources import files
 
 from toolframe_sdk import (
+    AuthorizationSpec,
     MethodSpec,
     Migration,
     PluginDefinition,
     Requirement,
     Resource,
+    ScopeSpec,
     ServiceSpec,
     StoreSchema,
 )
@@ -69,6 +71,12 @@ _MIGRATION_SQL = (
 plugin = PluginDefinition(
     id="entry-register",
     factory="toolframe_demo_entry_register.service:EntryRegister",
+    authorization=AuthorizationSpec(
+        scopes={
+            "entry-register.read": ScopeSpec(title="Read entries"),
+            "entry-register.write": ScopeSpec(title="Create and edit entries"),
+        }
+    ),
     requires={
         "storage": Requirement(service="toolframe.storage.sql", version=1),
     },
@@ -76,18 +84,25 @@ plugin = PluginDefinition(
         SERVICE_NAME: ServiceSpec(
             methods={
                 "list_entries": MethodSpec(
+                    audience="business",
+                    required_scopes=("entry-register.read",),
+                    public_api=True,
                     description="List newest entries for the dashboard.",
                     input_schema=_list_input(default=1000, maximum=1000),
                     output_schema=_LIST_OUTPUT_SCHEMA,
                     read_only=True,
                 ),
                 "list_entries_tool": MethodSpec(
+                    audience="business",
+                    required_scopes=("entry-register.read",),
                     description="List newest entries through the read-only MCP tool.",
                     input_schema=_list_input(default=50, maximum=100),
                     output_schema=_LIST_OUTPUT_SCHEMA,
                     read_only=True,
                 ),
                 "create_entry": MethodSpec(
+                    audience="business",
+                    required_scopes=("entry-register.write",),
                     description="Create an entry.",
                     input_schema={
                         "type": "object",
@@ -98,6 +113,8 @@ plugin = PluginDefinition(
                     output_schema=_MUTATION_ROW_OUTPUT,
                 ),
                 "update_entry": MethodSpec(
+                    audience="business",
+                    required_scopes=("entry-register.write",),
                     description="Update an entry using optimistic concurrency.",
                     input_schema={
                         "type": "object",
@@ -128,6 +145,7 @@ plugin = PluginDefinition(
             id="main",
             kind="dashboard.page",
             title="Entry Register",
+            required_scopes=("entry-register.read",),
             data={
                 "entrypoint": "toolframe_demo_entry_register.page:render",
                 "order": 10,

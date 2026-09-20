@@ -31,6 +31,9 @@ def app():
     class FakeContext:
         services = FakeServices()
 
+        def can(self, scope):
+            return True
+
     render(FakeContext())
 
 
@@ -73,6 +76,9 @@ def app_conflict():
 
     class FakeContext:
         services = FakeServices()
+
+        def can(self, scope):
+            return True
 
     render(FakeContext())
 
@@ -117,3 +123,17 @@ def test_edit_retains_version_shown_before_concurrent_update():
     next(button for button in at.button if button.label == "Save changes").click().run()
     assert at.session_state["submitted_version"] == 1
     assert "Refresh" in at.error[0].value
+
+
+def test_read_only_scope_keeps_metrics_without_mutation_controls():
+    import inspect
+
+    from streamlit.testing.v1 import AppTest
+
+    source = inspect.getsource(app).replace("return True", "return False")
+    ui = AppTest.from_string(source + "\napp()\n").run()
+    assert not ui.exception
+    assert len(ui.metric) == 2
+    assert not any(
+        button.label in {"Add entry", "Save changes"} for button in ui.button
+    )
