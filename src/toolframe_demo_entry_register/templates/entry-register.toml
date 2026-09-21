@@ -19,7 +19,7 @@ source = "pypi:toolframe-storage-sqlite==0.2.0"
 enabled = true
 
 [plugins.streamlit-dashboard]
-source = "pypi:toolframe-streamlit-dashboard==0.2.0"
+source = "pypi:toolframe-streamlit-dashboard==0.3.0"
 enabled = true
 
 [plugins.fastmcp]
@@ -31,7 +31,7 @@ source = "pypi:toolframe-llms-txt==0.2.0"
 enabled = true
 
 [plugins.entry-register]
-source = "pypi:toolframe-demo-entry-register==0.2.1"
+source = "pypi:toolframe-demo-entry-register==0.2.2"
 enabled = true
 
 [bindings]
