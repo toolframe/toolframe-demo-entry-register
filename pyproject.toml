@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "toolframe-demo-entry-register"
-version = "0.2.4"
+version = "0.2.5"
 description = "Ordinary business plugin example for Toolframe"
 requires-python = ">=3.14"
 dependencies = ["toolframe-sdk==0.2.0"]
