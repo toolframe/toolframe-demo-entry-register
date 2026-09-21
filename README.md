@@ -11,7 +11,7 @@ clean environment without Streamlit. Install the optional UI extra when the
 native page is needed:
 
 ```shell
-uv pip install 'toolframe-demo-entry-register[ui]==0.2.2'
+uv pip install 'toolframe-demo-entry-register[ui]==0.2.3'
 ```
 
 Build a clean wheel from this directory with:
