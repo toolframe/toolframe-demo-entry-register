@@ -125,3 +125,7 @@ asset checks, plus static workflow validation. They are not evidence of an
 executed GitHub-hosted Ubuntu run or a successful OIDC publication. This plugin
 validation does not cover other providers in the composition template or the
 full Toolframe launcher.
+
+The first page render has a bounded 60-second timeout for cold native-library
+imports. Later interactions retain their normal limits; tests do not use retries
+or skip assertions.
