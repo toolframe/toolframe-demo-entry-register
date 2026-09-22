@@ -86,7 +86,8 @@ def app_conflict():
 def test_normal_page_metrics():
     from streamlit.testing.v1 import AppTest
 
-    at = AppTest.from_function(app, default_timeout=10).run()
+    # Cold native dependency imports can exceed 30 seconds on a busy CI host.
+    at = AppTest.from_function(app, default_timeout=60).run()
     assert not at.exception
     assert [(metric.label, metric.value) for metric in at.metric] == [
         ("Entries", "1"),

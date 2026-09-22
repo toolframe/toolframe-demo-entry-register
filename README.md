@@ -49,6 +49,13 @@ published `POST /api/entry-register/entry-register.entries/list_entries` remain
 public; create/update are not published at the public API entrance. The template
 starts in public mode with local password management available.
 
+## Validation and releases
+
+[CI and publishing](docs/ci.md) describes the isolated local validation command,
+GitHub Actions triggers, pinned test dependencies, and the settings required for
+manual TestPyPI or PyPI publishing. Validation includes all plugin/page tests,
+distribution metadata, packaged assets, and a fresh wheel installation.
+
 ## License
 
 This example plugin and its application templates are licensed under the

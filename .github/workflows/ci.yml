@@ -1,0 +1,57 @@
+name: Python CI
+
+on:
+  pull_request:
+  push:
+  workflow_dispatch:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Test and validate distributions
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - name: Check out this revision
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          path: toolframe-demo-entry-register
+          persist-credentials: false
+      - name: Check out pinned SDK
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: ${{ vars.TOOLFRAME_REPOSITORY_OWNER || github.repository_owner }}/toolframe-sdk
+          ref: ef15b3575615839f24b2710beb3e40f9ae3ca2aa
+          path: toolframe-sdk
+          persist-credentials: false
+      - name: Check out pinned SQLite provider
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: ${{ vars.TOOLFRAME_REPOSITORY_OWNER || github.repository_owner }}/toolframe-storage-sqlite
+          ref: a6c3148a5079f78c935b434a60f6cbb62489ded7
+          path: toolframe-storage-sqlite
+          persist-credentials: false
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.14.7'
+      - name: Set up uv
+        uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
+        with:
+          version: '0.12.8'
+          enable-cache: false
+      - name: Run the local validation command
+        working-directory: toolframe-demo-entry-register
+        run: python scripts/ci.py --output-dir "$RUNNER_TEMP/entry-register-dist"
+      - name: Keep the validated distributions
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: python-dists-${{ github.sha }}
+          path: |
+            ${{ runner.temp }}/entry-register-dist/*.whl
+            ${{ runner.temp }}/entry-register-dist/*.tar.gz
+          if-no-files-found: error
+          retention-days: 7
