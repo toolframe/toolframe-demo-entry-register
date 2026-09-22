@@ -48,3 +48,8 @@ the same scopes on every new call. The MCP list tool, llms document and explicit
 published `POST /api/entry-register/entry-register.entries/list_entries` remain
 public; create/update are not published at the public API entrance. The template
 starts in public mode with local password management available.
+
+## License
+
+This example plugin and its application templates are licensed under the
+[MIT License](LICENSE).
