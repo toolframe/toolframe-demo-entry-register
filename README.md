@@ -60,3 +60,10 @@ distribution metadata, packaged assets, and a fresh wheel installation.
 
 This example plugin and its application templates are licensed under the
 [MIT License](LICENSE).
+
+## PostgreSQL storage
+
+Version 0.3 supports the PostgreSQL provider with an explicit migration variant
+and `INSERT … RETURNING id` through SDK 0.3. Use SQLite provider 0.3 or PostgreSQL
+provider 0.1 with the matching SDK. SQLite migration SQL and existing data are
+preserved. Provision the `entry-register` store before enabling PostgreSQL.

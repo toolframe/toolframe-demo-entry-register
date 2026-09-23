@@ -96,13 +96,14 @@ class EntryRegister(Plugin):
         created_at = _timestamp()
         storage = self.context.storage()
         async with storage.transaction() as transaction:
-            result = await transaction.execute(
+            result = await transaction.execute_returning(
                 "INSERT INTO entries "
                 "(label, value, version, created_at, updated_at) "
-                "VALUES (?, ?, 1, ?, ?)",
+                "VALUES (?, ?, 1, ?, ?) RETURNING id",
                 (label, value, created_at, created_at),
             )
-            entry_id = result.get("lastrowid")
+            returned = result.get("rows", [])
+            entry_id = returned[0].get("id") if len(returned) == 1 else None
             if not isinstance(entry_id, int) or entry_id < 1:
                 raise PluginError(
                     "entry_register_storage",

@@ -172,7 +172,17 @@ plugin = PluginDefinition(
     ),
     store=StoreSchema(
         revision="v1",
-        migrations=(Migration(revision="v1", sql=_MIGRATION_SQL),),
+        migrations=(
+            Migration(
+                revision="v1",
+                sql=_MIGRATION_SQL,
+                dialects={
+                    "postgresql": files(_PACKAGE)
+                    .joinpath("migrations", "0001_init.postgresql.sql")
+                    .read_text()
+                },
+            ),
+        ),
     ),
 )
 
