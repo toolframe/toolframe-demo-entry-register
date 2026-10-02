@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import importlib.metadata
 import importlib.util
+import logging
 import sys
 import tarfile
 import tomllib
@@ -22,16 +23,23 @@ def main() -> None:
     assert distribution.version == project["version"]
     assert distribution.metadata["License-Expression"] == "MIT"
     assert distribution.metadata.get_all("License-File") == ["LICENSE"]
-    assert "toolframe-sdk==0.2.0" in distribution.requires
+    assert set(project["dependencies"]).issubset(distribution.requires)
     assert importlib.util.find_spec("streamlit") is None, (
         "The base wheel must remain headless"
     )
     assert importlib.util.find_spec("toolframe_storage_sqlite") is None
+    assert importlib.util.find_spec("opentelemetry") is None
 
     import toolframe_sdk
 
     import toolframe_demo_entry_register
     import toolframe_demo_entry_register.page
+    from toolframe_demo_entry_register.service import EntryRegister
+
+    context = toolframe_sdk.RuntimeContext(
+        None, plugin_id="entry-register", generation="wheel-smoke"
+    )
+    assert isinstance(EntryRegister(context).log, logging.LoggerAdapter)
 
     for module in (toolframe_demo_entry_register, toolframe_sdk):
         assert (

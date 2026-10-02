@@ -8,8 +8,8 @@ with `--siblings /path/to/workspace`.
 
 | Repository | Required commit |
 | --- | --- |
-| `toolframe-sdk` | `a9000ab6ad9743a8f68b5ae3ef7c54fdbf15d6de` |
-| `toolframe-storage-sqlite` | `3812ccbc33beff87e03c93b750f750413c0786bd` |
+| `toolframe-sdk` | `63150417e7fd2d5c612dcb15360ffea192444951` |
+| `toolframe-storage-sqlite` | `f9c1bc081b38ec35a82a47fb02e31d65a5ca3cc3` |
 
 Run from the repository root:
 
@@ -56,7 +56,7 @@ pinned unpublished Toolframe wheels supplied directly. It never uses `--no-deps`
 The release guard can also be checked locally without creating a tag:
 
 ```shell
-uv run --isolated --no-project --python 3.14.7 python scripts/check_release.py refs/tags/v0.2.5
+uv run --isolated --no-project --python 3.14.7 python scripts/check_release.py refs/tags/v0.3.0
 ```
 
 Run `actionlint` (locally verified with 1.7.12) from this repository to validate
@@ -82,7 +82,7 @@ repositories; the default `GITHUB_TOKEN` cannot read unrelated private ones.
 
 `publish.yml` is manual only. Choose `testpypi` (the default) or `pypi` and run it
 against a tag exactly matching `v<project.version>`; the current version requires
-`v0.2.5`. A branch dispatch or mismatched tag fails before validation or upload.
+`v0.3.0`. A branch dispatch or mismatched tag fails before validation or upload.
 The workflow reuses `ci.yml` at the same revision, then downloads that run's
 validated distributions. It never rebuilds in the publishing job. CI has no
 concurrency group, so it cannot cancel the calling publish workflow. Publishing
@@ -100,7 +100,7 @@ uses its own non-cancelling concurrency group per tag and index.
    workflow filename **`publish.yml`**, and matching environment **`testpypi`**
    or **`pypi`**. For a new project, use that index's pending publisher setup.
    TestPyPI and PyPI have separate accounts and publisher registrations.
-4. Make the pinned runtime requirement `toolframe-sdk==0.2.0` available on the
+4. Make the pinned runtime requirement `toolframe-sdk==0.3.0` available on the
    intended consumer index before expecting a normal installation from it.
    CI's private wheelhouse is validation input and is not uploaded with this
    distribution. SQLite is a test/provider dependency, not a base requirement.

@@ -142,3 +142,52 @@ async def test_validation_and_missing_conflict(service):
     with pytest.raises(PluginError) as error:
         await service.update_entry(999, 1, "valid", 0)
     assert error.value.code == "entry_register_version_conflict"
+
+
+@pytest.mark.asyncio
+async def test_business_logs_identify_functions_without_entry_contents(service, caplog):
+    entry = await service.create_entry("private-label", 1234.56)
+    await service.list_entries(limit=10)
+    await service.list_entries_tool(limit=5)
+    await service.update_entry(entry["id"], 1, "private-update", 6543.21)
+    with pytest.raises(PluginError):
+        await service.update_entry(entry["id"], 1, "private-stale", 9999.99)
+
+    records = [r for r in caplog.records if r.name == "toolframe.plugin.entry-register"]
+    assert [(r.getMessage(), r.funcName) for r in records] == [
+        ("Entry created", "create_entry"),
+        ("Entries listed", "list_entries"),
+        ("Entries listed", "list_entries_tool"),
+        ("Entry updated", "update_entry"),
+        ("Entry update conflicted", "update_entry"),
+    ]
+    assert all(r.__dict__["toolframe.plugin.id"] == "entry-register" for r in records)
+    assert all(r.__dict__["toolframe.plugin.generation"] == "generation-1" for r in records)
+    assert records[0].entry_id == records[3].entry_id == records[4].entry_id == entry["id"]
+    assert records[0].version == 1 and records[3].version == 2
+    assert records[1].entry_count == records[2].entry_count == 1
+    assert records[1].limit == 10 and records[2].limit == 5
+    assert records[4].levelname == "WARNING" and records[4].expected_version == 1
+    logged = repr([r.__dict__ for r in records])
+    assert all(value not in logged for value in ("private-", "1234.56", "6543.21", "9999.99"))
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("operation", ["create", "update"])
+async def test_commit_failure_does_not_log_success(service, caplog, monkeypatch, operation):
+    entry = await service.create_entry("before", 1)
+    caplog.clear()
+    request = service.context.peer.request
+
+    async def fail_commit(method, params, timeout=None):
+        if params["method"] == "commit":
+            raise PluginError("storage_commit_failed", "Commit failed")
+        return await request(method, params, timeout=timeout)
+
+    monkeypatch.setattr(service.context.peer, "request", fail_commit)
+    with pytest.raises(PluginError, match="Commit failed"):
+        if operation == "create":
+            await service.create_entry("new", 2)
+        else:
+            await service.update_entry(entry["id"], 1, "updated", 3)
+    assert not any(r.getMessage() in {"Entry created", "Entry updated"} for r in caplog.records)

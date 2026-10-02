@@ -69,6 +69,9 @@ class EntryRegister(Plugin):
         rows = await self.context.storage().query(
             f"SELECT {_ROW_COLUMNS} FROM entries ORDER BY id DESC LIMIT ?", (limit,)
         )
+        self.log.info(
+            "Entries listed", extra={"entry_count": len(rows), "limit": limit}
+        )
         return {
             "entries": rows,
             "count": len(rows),
@@ -82,6 +85,9 @@ class EntryRegister(Plugin):
             raise _validation("limit must be between 1 and 100.", field="limit")
         rows = await self.context.storage().query(
             f"SELECT {_ROW_COLUMNS} FROM entries ORDER BY id DESC LIMIT ?", (limit,)
+        )
+        self.log.info(
+            "Entries listed", extra={"entry_count": len(rows), "limit": limit}
         )
         return {
             "entries": rows,
@@ -117,7 +123,12 @@ class EntryRegister(Plugin):
                     "entry_register_storage",
                     "Created entry could not be read back from storage.",
                 )
-            return rows[0]
+            entry = rows[0]
+        # Report success only after the transaction has committed.
+        self.log.bind(entry_id=entry_id).info(
+            "Entry created", extra={"version": entry["version"]}
+        )
+        return entry
 
     async def update_entry(
         self,
@@ -132,6 +143,7 @@ class EntryRegister(Plugin):
         )
         label = _validate_label(label)
         value = _validate_value(value)
+        log = self.log.bind(entry_id=entry_id)
         updated_at = _timestamp()
         storage = self.context.storage()
         async with storage.transaction() as transaction:
@@ -141,13 +153,23 @@ class EntryRegister(Plugin):
                 (label, value, updated_at, entry_id, expected_version),
             )
             if result.get("rowcount") != 1:
+                log.warning(
+                    "Entry update conflicted",
+                    extra={"expected_version": expected_version},
+                )
                 raise _version_conflict(entry_id)
             rows = await transaction.query(
                 f"SELECT {_ROW_COLUMNS} FROM entries WHERE id = ?", (entry_id,)
             )
             if not rows:
+                log.warning(
+                    "Entry update conflicted",
+                    extra={"expected_version": expected_version},
+                )
                 raise _version_conflict(entry_id)
-            return rows[0]
+            entry = rows[0]
+        log.info("Entry updated", extra={"version": entry["version"]})
+        return entry
 
     async def health(self) -> dict[str, str]:
         await self.context.storage().query(

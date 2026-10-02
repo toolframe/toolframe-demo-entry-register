@@ -1,4 +1,6 @@
 def app():
+    import logging
+
     from toolframe_demo_entry_register.page import render
 
     class FakeService:
@@ -30,6 +32,7 @@ def app():
 
     class FakeContext:
         services = FakeServices()
+        log = logging.getLogger("entry-register.test.page")
 
         def can(self, scope):
             return True
@@ -38,6 +41,8 @@ def app():
 
 
 def app_conflict():
+    import logging
+
     import streamlit as st
     from toolframe_sdk import PluginError
 
@@ -76,6 +81,7 @@ def app_conflict():
 
     class FakeContext:
         services = FakeServices()
+        log = logging.getLogger("entry-register.test.page")
 
         def can(self, scope):
             return True
@@ -83,16 +89,20 @@ def app_conflict():
     render(FakeContext())
 
 
-def test_normal_page_metrics():
+def test_normal_page_metrics(caplog):
     from streamlit.testing.v1 import AppTest
 
     # Cold native dependency imports can exceed 30 seconds on a busy CI host.
-    at = AppTest.from_function(app, default_timeout=60).run()
+    with caplog.at_level("DEBUG", logger="entry-register.test.page"):
+        at = AppTest.from_function(app, default_timeout=60).run()
     assert not at.exception
     assert [(metric.label, metric.value) for metric in at.metric] == [
         ("Entries", "1"),
         ("Displayed total", "2.50"),
     ]
+    record = next(r for r in caplog.records if r.name == "entry-register.test.page")
+    assert record.funcName == "render"
+    assert record.entry_count == 1
 
 
 def test_page_rejects_unchanged_edit():
