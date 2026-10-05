@@ -6,12 +6,12 @@ publishes the `entry-register.entries` service, a native dashboard page, one
 read-only MCP list tool, and a usage document.
 
 The business plugin is headless by default. Its runtime dependency is only
-`toolframe-sdk==0.2.0`, so the service and MCP descriptor can be imported in a
+`toolframe-sdk==0.3.0`, so the service and MCP descriptor can be imported in a
 clean environment without Streamlit. Install the optional UI extra when the
 native page is needed:
 
 ```shell
-uv pip install 'toolframe-demo-entry-register[ui]==0.2.5'
+uv pip install 'toolframe-demo-entry-register[ui]==0.3.1'
 ```
 
 Build a clean wheel from this directory with:
@@ -44,10 +44,16 @@ than 80 characters. Values are finite numbers and may be negative or zero.
 
 The page and service declare `entry-register.read` and `entry-register.write`.
 Read-only visitors see the list and totals without create/edit forms. Core checks
-the same scopes on every new call. The MCP list tool, llms document and explicitly
-published `POST /api/entry-register/entry-register.entries/list_entries` remain
-public; create/update are not published at the public API entrance. The template
-starts in public mode with local password management available.
+the same scopes on every new call. The llms document and explicitly published
+`POST /api/entry-register/entry-register.entries/list_entries` remain public;
+create/update are not published at the public API entrance.
+
+The application template uses SQLite 0.3.1 and Dashboard Auth 0.1.3. It starts
+with public Dashboard and MCP access for the demo; first-password creation enables
+protected Dashboard access with closed behavior during authentication outages.
+MCP has its own policy and can be protected independently with a compatible MCP
+auth provider. Use the access-password page to review each entrance before
+adapting the demo for private records.
 
 ## Validation and releases
 

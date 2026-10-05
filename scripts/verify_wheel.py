@@ -22,7 +22,9 @@ def main() -> None:
     assert distribution.version == project["version"]
     assert distribution.metadata["License-Expression"] == "MIT"
     assert distribution.metadata.get_all("License-File") == ["LICENSE"]
-    assert "toolframe-sdk==0.2.0" in distribution.requires
+    assert all(
+        requirement in distribution.requires for requirement in project["dependencies"]
+    )
     assert importlib.util.find_spec("streamlit") is None, (
         "The base wheel must remain headless"
     )

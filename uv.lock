@@ -841,7 +841,7 @@ wheels = [
 
 [[package]]
 name = "toolframe-demo-entry-register"
-version = "0.3.0"
+version = "0.3.1"
 source = { editable = "." }
 dependencies = [
     { name = "toolframe-sdk" },
@@ -899,7 +899,7 @@ dev = [
 
 [[package]]
 name = "toolframe-storage-sqlite"
-version = "0.3.0"
+version = "0.3.1"
 source = { editable = "../toolframe-storage-sqlite" }
 dependencies = [
     { name = "toolframe-sdk" },

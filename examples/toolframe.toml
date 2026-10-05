@@ -15,32 +15,39 @@ host = "127.0.0.1"
 port = 9876
 
 [plugins.storage-sqlite]
-source = "pypi:toolframe-storage-sqlite==0.2.0"
+source = "pypi:toolframe-storage-sqlite==0.3.1"
 enabled = true
 
 [plugins.streamlit-dashboard]
-source = "pypi:toolframe-streamlit-dashboard==0.4.1"
+source = "pypi:toolframe-streamlit-dashboard==0.4.2"
 enabled = true
 
 [plugins.fastmcp]
-source = "pypi:toolframe-fastmcp==0.2.0"
+source = "pypi:toolframe-fastmcp==0.2.1"
 enabled = true
 
 [plugins.llms-txt]
-source = "pypi:toolframe-llms-txt==0.2.0"
+source = "pypi:toolframe-llms-txt==0.2.1"
 enabled = true
 
 [plugins.entry-register]
-source = "pypi:toolframe-demo-entry-register==0.2.5"
+source = "pypi:toolframe-demo-entry-register==0.3.1"
 enabled = true
 
 [bindings]
 "toolframe.storage.sql" = "storage-sqlite"
 
 [plugins.auth]
-source = "pypi:toolframe-auth==0.1.1"
+source = "pypi:toolframe-auth==0.2.0"
 enabled = true
 
 [plugins.dashboard-auth]
-source = "pypi:toolframe-dashboard-auth==0.1.1"
+source = "pypi:toolframe-dashboard-auth==0.1.3"
 enabled = true
+
+[access]
+mode = "public"
+failure_mode = "closed"
+
+[mcp_access]
+mode = "public"
