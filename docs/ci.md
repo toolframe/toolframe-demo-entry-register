@@ -8,8 +8,8 @@ with `--siblings /path/to/workspace`.
 
 | Repository | Required commit |
 | --- | --- |
-| `toolframe-sdk` | `379217bc5210b7ecc3dda5a6937f4fad3b6baa00` |
-| `toolframe-storage-sqlite` | `6854818147a9f13e180a4cfbe70d6a9bce077069` |
+| `toolframe-sdk` | `7ca5a8d7cafbab996bf043374654375766ae9c61` |
+| `toolframe-storage-sqlite` | `09a3fc36d806da628dfb3584c8dca80607da2995` |
 
 Run from the repository root:
 
