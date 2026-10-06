@@ -24,14 +24,14 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: ${{ vars.TOOLFRAME_REPOSITORY_OWNER || github.repository_owner }}/toolframe-sdk
-          ref: 63150417e7fd2d5c612dcb15360ffea192444951
+          ref: 0e54c70586070eeca8499f8b773c9bedf89d87b1
           path: toolframe-sdk
           persist-credentials: false
       - name: Check out pinned SQLite provider
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: ${{ vars.TOOLFRAME_REPOSITORY_OWNER || github.repository_owner }}/toolframe-storage-sqlite
-          ref: f9c1bc081b38ec35a82a47fb02e31d65a5ca3cc3
+          ref: bcb6b578471f09e912285335232da64f667f6c27
           path: toolframe-storage-sqlite
           persist-credentials: false
       - name: Set up Python
