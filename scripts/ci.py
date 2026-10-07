@@ -14,7 +14,7 @@ import tomllib
 from pathlib import Path
 
 DEPENDENCIES = {
-    "toolframe-sdk": "7ca5a8d7cafbab996bf043374654375766ae9c61",
+    "toolframe-sdk": "6c2657ee04efb6613d8f33e4cb7949fdec1a8672",
     "toolframe-storage-sqlite": "09a3fc36d806da628dfb3584c8dca80607da2995",
 }
 

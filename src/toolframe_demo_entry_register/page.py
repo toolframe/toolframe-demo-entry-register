@@ -32,6 +32,7 @@ def render(context: PageContext) -> None:
     result = service.call("list_entries", {"limit": 1000})
     entries = result["entries"]
     total = sum(float(entry["value"]) for entry in entries)
+    context.log.debug("Entry Register page loaded", extra={"entry_count": len(entries)})
 
     st.title("Entry Register")
 
