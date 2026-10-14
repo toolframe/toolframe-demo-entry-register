@@ -8,8 +8,8 @@ with `--siblings /path/to/workspace`.
 
 | Repository | Required commit |
 | --- | --- |
-| `toolframe-sdk` | `6c2657ee04efb6613d8f33e4cb7949fdec1a8672` |
-| `toolframe-storage-sqlite` | `09a3fc36d806da628dfb3584c8dca80607da2995` |
+| `toolframe-sdk` | `ef91b609137a5fe7bae8e0c893e74b096ff06ffe` |
+| `toolframe-storage-sqlite` | `67c3b0ac4365db81c6c866083330c6405f299dfd` |
 
 Run from the repository root:
 
@@ -88,34 +88,10 @@ validated distributions. It never rebuilds in the publishing job. CI has no
 concurrency group, so it cannot cancel the calling publish workflow. Publishing
 uses its own non-cancelling concurrency group per tag and index.
 
-## External setup before publishing
+## Publication
 
-1. Push this repository, both required sibling repositories/commits, and the
-   intended version tag to the chosen GitHub owner. Ensure `publish.yml` also
-   exists on the default branch so manual dispatch is available.
-2. Create GitHub environments named exactly `testpypi` and `pypi`. Restrict
-   deployment to version tags and configure required reviewers as appropriate.
-3. On **each** index, configure a Trusted Publisher for the project
-   `toolframe-demo-entry-register`: the actual GitHub owner and repository name,
-   workflow filename **`publish.yml`**, and matching environment **`testpypi`**
-   or **`pypi`**. For a new project, use that index's pending publisher setup.
-   TestPyPI and PyPI have separate accounts and publisher registrations.
-4. Make the pinned runtime requirement `toolframe-sdk==0.3.0` available on the
-   intended consumer index before expecting a normal installation from it.
-   CI's private wheelhouse is validation input and is not uploaded with this
-   distribution. SQLite is a test/provider dependency, not a base requirement.
-5. Dispatch **Publish Python package** at the matching tag and select the index.
-   Only the upload job receives `id-token: write` and enters the chosen GitHub
-   environment. The PyPA action uses OIDC; no API-token secret is required.
-
-Publishing a tag is not automatic. Reusing an existing version's filenames on
-an index fails; plan version changes through the normal release process.
-These files prepare CI and publishing. No remote run, package upload, account
-registration, or Git push is performed by the local validation command.
-
-Official references: [uv on GitHub Actions](https://docs.astral.sh/uv/guides/integration/github/),
-[PyPI Trusted Publishing](https://docs.pypi.org/trusted-publishers/using-a-publisher/),
-and [GitHub runner labels](https://docs.github.com/en/actions/reference/runners/github-hosted-runners).
+See [releasing](releasing.md) for dependency order, private repository access,
+Trusted Publisher bindings, version tags and consumer installation checks.
 
 ## Local verification scope
 

@@ -38,7 +38,7 @@ jobs:
     name: Validate the selected revision
     needs: release-tag
     uses: ./.github/workflows/ci.yml
-
+    secrets: inherit
   publish:
     name: Upload validated distributions
     needs: validate

@@ -5,6 +5,18 @@ This package is an ordinary business plugin example for Toolframe. It owns an
 publishes the `entry-register.entries` service, a native dashboard page, one
 read-only MCP list tool, and a usage document.
 
+## Run the example
+
+The native CLI installs this package and its providers as one template:
+
+```sh
+uvx toolframe --home ./my-app init --template entry-register
+uvx toolframe --home ./my-app serve
+```
+
+In another terminal, run `uvx toolframe --home ./my-app open` for the local sign-in
+link. No source checkout or manually assembled wheelhouse is required.
+
 The business plugin is headless by default. Its runtime dependency is only
 `toolframe-sdk==0.3.0`, so the service and MCP descriptor can be imported in a
 clean environment without Streamlit. Install the optional UI extra when the
@@ -97,6 +109,8 @@ and does not use `print` for logging.
 GitHub Actions triggers, pinned test dependencies, and the settings required for
 manual TestPyPI or PyPI publishing. Validation includes all plugin/page tests,
 distribution metadata, packaged assets, and a fresh wheel installation.
+
+For release validation and Trusted Publisher setup, see [releasing](docs/releasing.md).
 
 ## License
 
