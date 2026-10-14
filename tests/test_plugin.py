@@ -162,19 +162,27 @@ async def test_business_logs_identify_functions_without_entry_contents(service, 
         ("Entry update conflicted", "update_entry"),
     ]
     assert all(r.__dict__["toolframe.plugin.id"] == "entry-register" for r in records)
-    assert all(r.__dict__["toolframe.plugin.generation"] == "generation-1" for r in records)
-    assert records[0].entry_id == records[3].entry_id == records[4].entry_id == entry["id"]
+    assert all(
+        r.__dict__["toolframe.plugin.generation"] == "generation-1" for r in records
+    )
+    assert (
+        records[0].entry_id == records[3].entry_id == records[4].entry_id == entry["id"]
+    )
     assert records[0].version == 1 and records[3].version == 2
     assert records[1].entry_count == records[2].entry_count == 1
     assert records[1].limit == 10 and records[2].limit == 5
     assert records[4].levelname == "WARNING" and records[4].expected_version == 1
     logged = repr([r.__dict__ for r in records])
-    assert all(value not in logged for value in ("private-", "1234.56", "6543.21", "9999.99"))
+    assert all(
+        value not in logged for value in ("private-", "1234.56", "6543.21", "9999.99")
+    )
 
 
 @pytest.mark.asyncio
 @pytest.mark.parametrize("operation", ["create", "update"])
-async def test_commit_failure_does_not_log_success(service, caplog, monkeypatch, operation):
+async def test_commit_failure_does_not_log_success(
+    service, caplog, monkeypatch, operation
+):
     entry = await service.create_entry("before", 1)
     caplog.clear()
     request = service.context.peer.request
@@ -190,4 +198,6 @@ async def test_commit_failure_does_not_log_success(service, caplog, monkeypatch,
             await service.create_entry("new", 2)
         else:
             await service.update_entry(entry["id"], 1, "updated", 3)
-    assert not any(r.getMessage() in {"Entry created", "Entry updated"} for r in caplog.records)
+    assert not any(
+        r.getMessage() in {"Entry created", "Entry updated"} for r in caplog.records
+    )
