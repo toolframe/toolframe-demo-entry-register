@@ -65,8 +65,8 @@ scripts. `python scripts/ci.py --help` describes the script options.
 
 ## GitHub Actions
 
-`ci.yml` runs on pushes, pull requests, manual dispatches, and reusable workflow
-calls. It uses Ubuntu 24.04, Python 3.14.7, uv 0.12.8, read-only repository
+`ci.yml` runs on pushes to `main`, pull requests, manual dispatches, and reusable
+workflow calls. It uses Ubuntu 24.04, Python 3.14.7, uv 0.12.8, read-only repository
 permissions, and a 20-minute timeout. Successful runs retain the wheel and sdist
 as `python-dists-<github.sha>` for seven days. This verifies the Python plugin;
 it does not establish support for the complete Toolframe application on Linux.
