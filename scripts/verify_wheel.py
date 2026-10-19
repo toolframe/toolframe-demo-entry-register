@@ -29,7 +29,7 @@ def main() -> None:
     assert importlib.util.find_spec("streamlit") is None, (
         "The base wheel must remain headless"
     )
-    assert importlib.util.find_spec("toolframe_storage_sqlite") is None
+    assert importlib.util.find_spec("toolframe_sql_sqlite") is None
     assert importlib.util.find_spec("opentelemetry") is None
 
     import toolframe_sdk

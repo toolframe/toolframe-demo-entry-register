@@ -1,7 +1,7 @@
 # Toolframe Entry Register
 
 This package is an ordinary business plugin example for Toolframe. It owns an
-`entries` table through the host's scoped `toolframe.storage.sql` service and
+`entries` table through the host's scoped `toolframe.sql` service and
 publishes the `entry-register.entries` service, a native dashboard page, one
 read-only MCP list tool, and a usage document.
 
@@ -18,12 +18,12 @@ In another terminal, run `uvx toolframe --home ./my-app open` for the local sign
 link. No source checkout or manually assembled wheelhouse is required.
 
 The business plugin is headless by default. Its runtime dependency is only
-`toolframe-sdk==0.3.0`, so the service and MCP descriptor can be imported in a
+`toolframe-sdk==0.4.0`, so the service and MCP descriptor can be imported in a
 clean environment without Streamlit. Install the optional UI extra when the
 native page is needed:
 
 ```shell
-uv pip install 'toolframe-demo-entry-register[ui]==0.3.1'
+uv pip install 'toolframe-demo-entry-register[ui]==0.4.0'
 ```
 
 Build a clean wheel from this directory with:
@@ -44,7 +44,7 @@ auth, and this
 plugin. A local development composition can point the entry plugin at a
 checkout with a source such as
 `path:../toolframe-demo-entry-register`; keep the other provider bindings and
-the `toolframe.storage.sql` binding intact.
+the `toolframe.sql` binding intact.
 
 The dashboard owns create and edit interactions. It shows at most 1,000 newest
 rows and totals the rows it displays. The MCP resource is read-only, defaults

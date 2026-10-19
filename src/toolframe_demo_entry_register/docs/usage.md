@@ -14,6 +14,6 @@ Updates use compare-and-set semantics. The caller sends the row's observed
 stale version returns `entry_register_version_conflict`, with guidance to
 refresh before trying again.
 
-The plugin receives the scoped `toolframe.storage.sql` service from the host.
+The plugin receives the scoped `toolframe.sql` service from the host.
 It never opens a database path itself, and its initial schema is applied by the
 host's explicit migration lifecycle.
