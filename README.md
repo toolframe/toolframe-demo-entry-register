@@ -60,7 +60,7 @@ the same scopes on every new call. The llms document and explicitly published
 `POST /api/entry-register/entry-register.entries/list_entries` remain public;
 create/update are not published at the public API entrance.
 
-The application template uses SQLite 0.3.1 and Dashboard Auth 0.1.3. It starts
+The application template uses SQLite 0.4.0 and Dashboard Auth 0.2.0. It starts
 with public Dashboard and MCP access for the demo; first-password creation enables
 protected Dashboard access with closed behavior during authentication outages.
 MCP has its own policy and can be protected independently with a compatible MCP
@@ -119,9 +119,9 @@ This example plugin and its application templates are licensed under the
 
 ## PostgreSQL storage
 
-Version 0.3 supports the PostgreSQL provider with an explicit migration variant
-and `INSERT … RETURNING id` through SDK 0.3. Use SQLite provider 0.3 or PostgreSQL
-provider 0.1 with the matching SDK. SQLite migration SQL and existing data are
+Version 0.4 supports the PostgreSQL provider with an explicit migration variant
+and `INSERT … RETURNING id` through SDK 0.4. Use SQLite provider 0.4 or PostgreSQL
+provider 0.2 with the matching SDK. SQLite migration SQL and existing data are
 preserved. Provision the `entry-register` store before enabling PostgreSQL.
 
 For development hooks and contribution rules, see [Contributing](CONTRIBUTING.md).
