@@ -5,7 +5,7 @@ from contextlib import contextmanager
 
 import pytest
 from toolframe_sdk import PluginError, RuntimeContext, call_context
-from toolframe_storage_sqlite.plugin import ADMIN_SERVICE, SQL_SERVICE, SqliteProvider
+from toolframe_sql_sqlite.plugin import ADMIN_SERVICE, SQL_SERVICE, SqliteProvider
 
 from toolframe_demo_entry_register.plugin import plugin
 from toolframe_demo_entry_register.service import EntryRegister
@@ -39,7 +39,7 @@ class StoragePeer:
         del timeout
         if method != "service.call":
             raise AssertionError(method)
-        alias = SQL_SERVICE if params["alias"] == "storage" else params["alias"]
+        alias = SQL_SERVICE if params["alias"] == "sql" else params["alias"]
         token = call_context.set(
             {
                 "application_id": "application-1",
@@ -60,7 +60,7 @@ async def service(tmp_path):
     storage = SqliteProvider(
         RuntimeContext(
             None,
-            plugin_id="storage-sqlite",
+            plugin_id="sql-sqlite",
             generation="storage-generation",
             state_directory=tmp_path,
         )

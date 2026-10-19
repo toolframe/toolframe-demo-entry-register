@@ -66,7 +66,7 @@ class EntryRegister(Plugin):
         limit = _validate_positive_integer(limit, "limit")
         if limit > 1000:
             raise _validation("limit must be between 1 and 1000.", field="limit")
-        rows = await self.context.storage().query(
+        rows = await self.context.sql().query(
             f"SELECT {_ROW_COLUMNS} FROM entries ORDER BY id DESC LIMIT ?", (limit,)
         )
         self.log.info(
@@ -83,7 +83,7 @@ class EntryRegister(Plugin):
         limit = _validate_positive_integer(limit, "limit")
         if limit > 100:
             raise _validation("limit must be between 1 and 100.", field="limit")
-        rows = await self.context.storage().query(
+        rows = await self.context.sql().query(
             f"SELECT {_ROW_COLUMNS} FROM entries ORDER BY id DESC LIMIT ?", (limit,)
         )
         self.log.info(
@@ -100,7 +100,7 @@ class EntryRegister(Plugin):
         label = _validate_label(label)
         value = _validate_value(value)
         created_at = _timestamp()
-        storage = self.context.storage()
+        storage = self.context.sql()
         async with storage.transaction() as transaction:
             result = await transaction.execute_returning(
                 "INSERT INTO entries "
@@ -145,7 +145,7 @@ class EntryRegister(Plugin):
         value = _validate_value(value)
         log = self.log.bind(entry_id=entry_id)
         updated_at = _timestamp()
-        storage = self.context.storage()
+        storage = self.context.sql()
         async with storage.transaction() as transaction:
             result = await transaction.execute(
                 "UPDATE entries SET label = ?, value = ?, version = version + 1, "
@@ -172,7 +172,7 @@ class EntryRegister(Plugin):
         return entry
 
     async def health(self) -> dict[str, str]:
-        await self.context.storage().query(
+        await self.context.sql().query(
             "SELECT id FROM entries ORDER BY id DESC LIMIT 1"
         )
         return {"runtime": "ready", "business": "ready"}

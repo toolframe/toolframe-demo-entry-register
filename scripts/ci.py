@@ -14,8 +14,8 @@ import tomllib
 from pathlib import Path
 
 DEPENDENCIES = {
-    "toolframe-sdk": "ef91b609137a5fe7bae8e0c893e74b096ff06ffe",
-    "toolframe-storage-sqlite": "67c3b0ac4365db81c6c866083330c6405f299dfd",
+    "toolframe-sdk": "2cd153ec36c585a9adb5ad566effc2985d9e222d",
+    "toolframe-sql-sqlite": "a2764f83840fb8ad71d7eaf138c7e09799ce19bd",
 }
 
 
@@ -98,7 +98,7 @@ def validate(source: Path, siblings: Path, work: Path, output: Path) -> None:
     (wheel,) = dist.glob("*.whl")
     (sdist,) = dist.glob("*.tar.gz")
     (sdk_wheel,) = wheels.glob("toolframe_sdk-*.whl")
-    (storage_wheel,) = wheels.glob("toolframe_storage_sqlite-*.whl")
+    (storage_wheel,) = wheels.glob("toolframe_sql_sqlite-*.whl")
 
     call("uv", "venv", work / "metadata-env")
     metadata_python = work / "metadata-env/bin/python"
