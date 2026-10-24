@@ -8,8 +8,8 @@ with `--siblings /path/to/workspace`.
 
 | Repository | Required commit |
 | --- | --- |
-| `toolframe-sdk` | `2cd153ec36c585a9adb5ad566effc2985d9e222d` |
-| `toolframe-sql-sqlite` | `a2764f83840fb8ad71d7eaf138c7e09799ce19bd` |
+| `toolframe-sdk` | `539ced4dbdf9e303ec0f0205a35d65287a480b2a` |
+| `toolframe-sql-sqlite` | `d4f3fcf9d8145fd0dab3d57aad8a452fb5aa527b` |
 
 Run from the repository root:
 
@@ -56,7 +56,7 @@ pinned unpublished Toolframe wheels supplied directly. It never uses `--no-deps`
 The release guard can also be checked locally without creating a tag:
 
 ```shell
-uv run --isolated --no-project --python 3.14.7 python scripts/check_release.py refs/tags/v0.3.0
+uv run --isolated --no-project --python 3.14.7 python scripts/check_release.py refs/tags/v0.4.1
 ```
 
 Run `actionlint` (locally verified with 1.7.12) from this repository to validate
@@ -82,7 +82,7 @@ repositories; the default `GITHUB_TOKEN` cannot read unrelated private ones.
 
 `publish.yml` is manual only. Choose `testpypi` (the default) or `pypi` and run it
 against a tag exactly matching `v<project.version>`; the current version requires
-`v0.3.0`. A branch dispatch or mismatched tag fails before validation or upload.
+`v0.4.1`. A branch dispatch or mismatched tag fails before validation or upload.
 The workflow reuses `ci.yml` at the same revision, then downloads that run's
 validated distributions. It never rebuilds in the publishing job. CI has no
 concurrency group, so it cannot cancel the calling publish workflow. Publishing

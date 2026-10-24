@@ -18,12 +18,12 @@ In another terminal, run `uvx toolframe --home ./my-app open` for the local sign
 link. No source checkout or manually assembled wheelhouse is required.
 
 The business plugin is headless by default. Its runtime dependency is only
-`toolframe-sdk==0.4.0`, so the service and MCP descriptor can be imported in a
+`toolframe-sdk>=0.4,<0.5`, so the service and MCP descriptor can be imported in a
 clean environment without Streamlit. Install the optional UI extra when the
 native page is needed:
 
 ```shell
-uv pip install 'toolframe-demo-entry-register[ui]==0.4.0'
+uv pip install 'toolframe-demo-entry-register[ui]==0.4.1'
 ```
 
 Build a clean wheel from this directory with:
@@ -60,7 +60,7 @@ the same scopes on every new call. The llms document and explicitly published
 `POST /api/entry-register/entry-register.entries/list_entries` remain public;
 create/update are not published at the public API entrance.
 
-The application template uses SQLite 0.4.0 and Dashboard Auth 0.2.0. It starts
+The application template uses SQLite 0.4.1 and Dashboard Auth 0.2.1. It starts
 with public Dashboard and MCP access for the demo; first-password creation enables
 protected Dashboard access with closed behavior during authentication outages.
 MCP has its own policy and can be protected independently with a compatible MCP

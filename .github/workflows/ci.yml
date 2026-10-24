@@ -26,7 +26,7 @@ jobs:
         with:
           repository: ${{ vars.TOOLFRAME_REPOSITORY_OWNER || github.repository_owner }}/toolframe-sdk
           token: ${{ secrets.TOOLFRAME_READ_TOKEN || github.token }}
-          ref: 2cd153ec36c585a9adb5ad566effc2985d9e222d
+          ref: 539ced4dbdf9e303ec0f0205a35d65287a480b2a
           path: toolframe-sdk
           persist-credentials: false
       - name: Check out pinned SQLite provider
@@ -34,7 +34,7 @@ jobs:
         with:
           repository: ${{ vars.TOOLFRAME_REPOSITORY_OWNER || github.repository_owner }}/toolframe-sql-sqlite
           token: ${{ secrets.TOOLFRAME_READ_TOKEN || github.token }}
-          ref: a2764f83840fb8ad71d7eaf138c7e09799ce19bd
+          ref: d4f3fcf9d8145fd0dab3d57aad8a452fb5aa527b
           path: toolframe-sql-sqlite
           persist-credentials: false
       - name: Set up Python
