@@ -80,7 +80,7 @@ The sibling repositories and these exact commits must be available on GitHub
 under the selected owner. The supplied workflow expects public sibling
 repositories; the default `GITHUB_TOKEN` cannot read unrelated private ones.
 
-`publish.yml` is manual only. Choose `testpypi` (the default) or `pypi` and run it
+`publish.yml` publishes to PyPI on manual dispatch only. Run it
 against a tag exactly matching `v<project.version>`; the current version requires
 `v0.4.1`. A branch dispatch or mismatched tag fails before validation or upload.
 The workflow reuses `ci.yml` at the same revision, then downloads that run's
