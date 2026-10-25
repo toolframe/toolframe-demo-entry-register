@@ -18,7 +18,7 @@ In another terminal, run `uvx toolframe --home ./my-app open` for the local sign
 link. No source checkout or manually assembled wheelhouse is required.
 
 The business plugin is headless by default. Its runtime dependency is only
-`toolframe-sdk>=0.4,<0.5`, so the service and MCP descriptor can be imported in a
+`toolframe-sdk>=0.4.0,<1`, so the service and MCP descriptor can be imported in a
 clean environment without Streamlit. Install the optional UI extra when the
 native page is needed:
 
@@ -125,3 +125,6 @@ provider 0.2 with the matching SDK. SQLite migration SQL and existing data are
 preserved. Provision the `entry-register` store before enabling PostgreSQL.
 
 For development hooks and contribution rules, see [Contributing](CONTRIBUTING.md).
+
+Plugin dependencies allow compatible SDK 0.x updates from the declared minimum.
+See the [SDK compatibility policy](https://github.com/toolframe/toolframe-sdk/blob/main/docs/compatibility.md) for API guarantees and minimum/latest verification.
