@@ -125,3 +125,6 @@ provider 0.2 with the matching SDK. SQLite migration SQL and existing data are
 preserved. Provision the `entry-register` store before enabling PostgreSQL.
 
 For development hooks and contribution rules, see [Contributing](CONTRIBUTING.md).
+
+Plugin dependencies allow compatible SDK 0.x updates from the declared minimum.
+See the [SDK compatibility policy](https://github.com/toolframe/toolframe-sdk/blob/main/docs/compatibility.md) for API guarantees and minimum/latest verification.
