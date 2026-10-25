@@ -841,7 +841,7 @@ wheels = [
 
 [[package]]
 name = "toolframe-demo-entry-register"
-version = "0.4.1"
+version = "0.4.2"
 source = { editable = "." }
 dependencies = [
     { name = "toolframe-sdk" },
@@ -857,6 +857,7 @@ dev = [
     { name = "pytest" },
     { name = "pytest-asyncio" },
     { name = "ruff" },
+    { name = "streamlit" },
     { name = "toolframe-sql-sqlite" },
 ]
 
@@ -872,6 +873,7 @@ dev = [
     { name = "pytest", specifier = ">=8,<10" },
     { name = "pytest-asyncio", specifier = ">=1,<2" },
     { name = "ruff", specifier = ">=0.12,<1" },
+    { name = "streamlit", specifier = "==1.61.0" },
     { name = "toolframe-sql-sqlite", editable = "../toolframe-sql-sqlite" },
 ]
 
