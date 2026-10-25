@@ -107,7 +107,7 @@ and does not use `print` for logging.
 
 [CI and publishing](docs/ci.md) describes the isolated local validation command,
 GitHub Actions triggers, pinned test dependencies, and the settings required for
-manual TestPyPI or PyPI publishing. Validation includes all plugin/page tests,
+manual PyPI publishing. Validation includes all plugin/page tests,
 distribution metadata, packaged assets, and a fresh wheel installation.
 
 For release validation and Trusted Publisher setup, see [releasing](docs/releasing.md).

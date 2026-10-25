@@ -2,21 +2,12 @@ name: Publish Python package
 
 on:
   workflow_dispatch:
-    inputs:
-      target:
-        description: Package index
-        type: choice
-        required: true
-        default: testpypi
-        options:
-          - testpypi
-          - pypi
 
 permissions:
   contents: read
 
 concurrency:
-  group: publish-${{ github.ref }}-${{ inputs.target }}
+  group: publish-${{ github.ref }}-pypi
   cancel-in-progress: false
 
 jobs:
@@ -42,11 +33,11 @@ jobs:
   publish:
     name: Upload validated distributions
     needs: validate
-    if: github.ref_type == 'tag' && (inputs.target == 'testpypi' || inputs.target == 'pypi')
+    if: github.ref_type == 'tag'
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     environment:
-      name: ${{ inputs.target }}
+      name: pypi
     permissions:
       contents: read
       id-token: write
@@ -60,4 +51,4 @@ jobs:
         uses: pypa/gh-action-pypi-publish@dc37677b2e1c63e2034f94d8a5b11f265b73ba33 # v1.14.2
         with:
           packages-dir: dist/
-          repository-url: ${{ inputs.target == 'testpypi' && 'https://test.pypi.org/legacy/' || 'https://upload.pypi.org/legacy/' }}
+          repository-url: https://upload.pypi.org/legacy/
