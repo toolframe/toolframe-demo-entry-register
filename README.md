@@ -18,7 +18,7 @@ In another terminal, run `uvx toolframe --home ./my-app open` for the local sign
 link. No source checkout or manually assembled wheelhouse is required.
 
 The business plugin is headless by default. Its runtime dependency is only
-`toolframe-sdk>=0.4,<0.5`, so the service and MCP descriptor can be imported in a
+`toolframe-sdk>=0.4.0,<1`, so the service and MCP descriptor can be imported in a
 clean environment without Streamlit. Install the optional UI extra when the
 native page is needed:
 
