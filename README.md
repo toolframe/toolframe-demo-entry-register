@@ -23,7 +23,7 @@ clean environment without Streamlit. Install the optional UI extra when the
 native page is needed:
 
 ```shell
-uv pip install 'toolframe-demo-entry-register[ui]==0.4.1'
+uv pip install 'toolframe-demo-entry-register[ui]==0.4.2'
 ```
 
 Build a clean wheel from this directory with:
@@ -60,8 +60,13 @@ the same scopes on every new call. The llms document and explicitly published
 `POST /api/entry-register/entry-register.entries/list_entries` remain public;
 create/update are not published at the public API entrance.
 
-The application template uses SQLite 0.4.1 and Dashboard Auth 0.2.1. It starts
-with public Dashboard and MCP access for the demo; first-password creation enables
+The application recipe declares compatible dependency ranges, with SQLite 0.4.1,
+`toolframe-fastmcp` 0.3.1 and Dashboard Auth 0.2.1 as minimums. Core resolves the
+latest compatible stable selection and saves exact sources and locks before the
+first serve. Existing applications retain those versions until explicit update.
+See the [recipe contract](docs/recipe.md) for all bounds and offline behavior.
+
+The demo starts with public Dashboard and MCP access; first-password creation enables
 protected Dashboard access with closed behavior during authentication outages.
 MCP has its own policy and can be protected independently with a compatible MCP
 auth provider. Use the access-password page to review each entrance before

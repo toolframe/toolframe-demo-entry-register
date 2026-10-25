@@ -56,7 +56,7 @@ pinned unpublished Toolframe wheels supplied directly. It never uses `--no-deps`
 The release guard can also be checked locally without creating a tag:
 
 ```shell
-uv run --isolated --no-project --python 3.14.7 python scripts/check_release.py refs/tags/v0.4.1
+uv run --isolated --no-project --python 3.14.7 python scripts/check_release.py refs/tags/v0.4.2
 ```
 
 Run `actionlint` (locally verified with 1.7.12) from this repository to validate
@@ -82,7 +82,7 @@ repositories; the default `GITHUB_TOKEN` cannot read unrelated private ones.
 
 `publish.yml` publishes to PyPI on manual dispatch only. Run it
 against a tag exactly matching `v<project.version>`; the current version requires
-`v0.4.1`. A branch dispatch or mismatched tag fails before validation or upload.
+`v0.4.2`. A branch dispatch or mismatched tag fails before validation or upload.
 The workflow reuses `ci.yml` at the same revision, then downloads that run's
 validated distributions. It never rebuilds in the publishing job. CI has no
 concurrency group, so it cannot cancel the calling publish workflow. Publishing
