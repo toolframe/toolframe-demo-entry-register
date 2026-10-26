@@ -1,135 +1,55 @@
+<p align="center">
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/readme-banner-dark.png">
+  <source media="(prefers-color-scheme: light)" srcset="docs/assets/readme-banner-light.png">
+  <img src="docs/assets/readme-banner-light.png" alt="Toolframe Entry Register — Try a complete Toolframe app with editable entries, totals and a read-only MCP tool." width="720">
+</picture>
+</p>
+
 # Toolframe Entry Register
 
-This package is an ordinary business plugin example for Toolframe. It owns an
-`entries` table through the host's scoped `toolframe.sql` service and
-publishes the `entry-register.entries` service, a native dashboard page, one
-read-only MCP list tool, and a usage document.
+[![CI on main](https://github.com/toolframe/toolframe-demo-entry-register/actions/workflows/ci.yml/badge.svg?branch=main&event=push)](https://github.com/toolframe/toolframe-demo-entry-register/actions/workflows/ci.yml?query=branch%3Amain)
 
-## Run the example
+Try a complete Toolframe app with editable entries, totals and a read-only MCP tool.
+This example shows a business plugin owning its data, permissions, page and documentation.
 
-The native CLI installs this package and its providers as one template:
+## Quick start
+
+With [uv](https://docs.astral.sh/uv/getting-started/installation/) installed:
 
 ```sh
-uvx toolframe --home ./my-app init --template entry-register
-uvx toolframe --home ./my-app serve
+uv tool install toolframe
+toolframe --home ./my-app init --template entry-register
+toolframe --home ./my-app serve
 ```
 
-In another terminal, run `uvx toolframe --home ./my-app open` for the local sign-in
-link. No source checkout or manually assembled wheelhouse is required.
+In another terminal, get the local sign-in link:
 
-The business plugin is headless by default. Its runtime dependency is only
-`toolframe-sdk>=0.4.0,<1`, so the service and MCP descriptor can be imported in a
-clean environment without Streamlit. Install the optional UI extra when the
-native page is needed:
-
-```shell
-uv pip install 'toolframe-demo-entry-register[ui]==0.4.2'
+```sh
+toolframe --home ./my-app open
 ```
 
-Build a clean wheel from this directory with:
+The recipe installs SQLite, Dashboard, MCP, llms.txt and authentication providers.
+It selects compatible stable versions and saves exact locks; keep `my-app` to
+retain data. The native launcher supports macOS and glibc Linux on ARM64/x86-64.
 
-```shell
-uv build --no-sources --wheel
-```
+**Access:** the demo starts with public Dashboard business access and MCP.
+First-password creation protects Dashboard; MCP has a separate policy. The llms
+document and explicitly published list HTTP method remain public. Review each
+entrance before adapting the example for private records.
 
-The wheel contains the declared migration, usage document, and composition
-template. The host applies the migration during its store lifecycle; the
-plugin does not open a database path or run runtime DDL.
+## Guides
 
-Copy `src/toolframe_demo_entry_register/templates/entry-register.toml` or
-`examples/toolframe.toml` into an application home as `toolframe.toml`, then
-replace the documented application UUID and name. The template uses the
-published distributions for storage, dashboard, MCP, llms.txt, auth, Dashboard
-auth, and this
-plugin. A local development composition can point the entry plugin at a
-checkout with a source such as
-`path:../toolframe-demo-entry-register`; keep the other provider bindings and
-the `toolframe.sql` binding intact.
+| I want to… | Start here |
+| --- | --- |
+| Understand entries and permissions | [Usage](docs/usage.md) |
+| Control provider versions | [Recipe contract](docs/recipe.md) |
+| Follow the source | [Service](src/toolframe_demo_entry_register/service.py) · [Page](src/toolframe_demo_entry_register/page.py) |
+| Add structured logs | [Logging](docs/logging.md) |
+| Contribute or run checks | [Contributing](CONTRIBUTING.md) · [Verification](docs/ci.md) |
 
-The dashboard owns create and edit interactions. It shows at most 1,000 newest
-rows and totals the rows it displays. The MCP resource is read-only, defaults
-to 50 rows, and accepts limits through 100. Entry updates use compare-and-set:
-the observed row version must still match, then the service increments it once.
-Missing and stale rows return `entry_register_version_conflict`; refresh the
-dashboard before retrying. Labels are trimmed and must be nonempty and no more
-than 80 characters. Values are finite numbers and may be negative or zero.
-
-The page and service declare `entry-register.read` and `entry-register.write`.
-Read-only visitors see the list and totals without create/edit forms. Core checks
-the same scopes on every new call. The llms document and explicitly published
-`POST /api/entry-register/entry-register.entries/list_entries` remain public;
-create/update are not published at the public API entrance.
-
-The application recipe declares compatible dependency ranges, with SQLite 0.4.1,
-`toolframe-fastmcp` 0.3.1 and Dashboard Auth 0.2.1 as minimums. Core resolves the
-latest compatible stable selection and saves exact sources and locks before the
-first serve. Existing applications retain those versions until explicit update.
-See the [recipe contract](docs/recipe.md) for all bounds and offline behavior.
-
-The demo starts with public Dashboard and MCP access; first-password creation enables
-protected Dashboard access with closed behavior during authentication outages.
-MCP has its own policy and can be protected independently with a compatible MCP
-auth provider. Use the access-password page to review each entrance before
-adapting the demo for private records.
-
-## Structured logging
-
-The [business service](src/toolframe_demo_entry_register/service.py) uses the SDK's
-`self.log` context logger. List operations log the row count and requested limit
-at `INFO`. Create and update operations log the entry ID and version only after
-the transaction commits. A stale or missing update logs `WARNING` with the entry
-ID and expected version. Entry labels, values and SQL are excluded.
-
-Use `extra` for event fields and `bind` for labels shared by related events:
-
-```python
-log = self.log.bind(entry_id=entry_id)
-log.info("Entry updated", extra={"version": entry["version"]})
-```
-
-Toolframe adds plugin identity, the actual calling function/file/line, current
-service and method, and active trace/span IDs. The
-[Dashboard page](src/toolframe_demo_entry_register/page.py) uses `context.log`
-at `DEBUG` for its displayed row count; the SDK adds page ownership automatically.
-Health checks do not emit business events.
-
-Core owns logging configuration. Local structured output is available without
-OpenTelemetry. To export logs from a runtime with telemetry support, set these
-variables before starting Core, replacing the collector address as needed:
-
-```shell
-export TOOLFRAME_TRACING_ENABLED=true
-export OTEL_LOGS_EXPORTER=otlp
-export OTEL_EXPORTER_OTLP_ENDPOINT=http://127.0.0.1:4318
-export TOOLFRAME_LOGS_LEVEL=DEBUG
-```
-
-`DEBUG` includes Dashboard render events and automatic SDK call logs. `INFO`
-omits those debug events. The plugin does not configure handlers or exporters
-and does not use `print` for logging.
-
-## Validation and releases
-
-[CI and publishing](docs/ci.md) describes the isolated local validation command,
-GitHub Actions triggers, pinned test dependencies, and the settings required for
-manual PyPI publishing. Validation includes all plugin/page tests,
-distribution metadata, packaged assets, and a fresh wheel installation.
-
-For release validation and Trusted Publisher setup, see [releasing](docs/releasing.md).
+[Releases](https://github.com/toolframe/toolframe-demo-entry-register/releases)
 
 ## License
 
-This example plugin and its application templates are licensed under the
-[MIT License](LICENSE).
-
-## PostgreSQL storage
-
-Version 0.4 supports the PostgreSQL provider with an explicit migration variant
-and `INSERT … RETURNING id` through SDK 0.4. Use SQLite provider 0.4 or PostgreSQL
-provider 0.2 with the matching SDK. SQLite migration SQL and existing data are
-preserved. Provision the `entry-register` store before enabling PostgreSQL.
-
-For development hooks and contribution rules, see [Contributing](CONTRIBUTING.md).
-
-Plugin dependencies allow compatible SDK 0.x updates from the declared minimum.
-See the [SDK compatibility policy](https://github.com/toolframe/toolframe-sdk/blob/main/docs/compatibility.md) for API guarantees and minimum/latest verification.
+[MIT](LICENSE).
